@@ -13,7 +13,7 @@ enc.fit(acidentes['BAIRRO'])
 bairroEnc = enc.transform(acidentes['BAIRRO'])
 base['BAIRRO'] = bairroEnc
 
-#print(base)
+#print(base['BAIRRO'])
 #print(enc.classes_)
 
 enc = preprocessing.LabelEncoder()
@@ -22,13 +22,9 @@ enc.fit(acidentes['TIPO'])
 tipoEnc = enc.transform(acidentes['TIPO'])
 base['TIPO'] = tipoEnc
 
-#print(base)
-#print(enc.inverse_transform(classes))
-
-
 enc = preprocessing.LabelEncoder()
 enc.fit(acidentes['OCORRENCIA'])
-#print(enc.classes_)
+print(enc.classes_)
 ocorrenciaEnc = enc.transform(acidentes['OCORRENCIA'])
 base['OCORRENCIA']=ocorrenciaEnc
 
@@ -48,6 +44,40 @@ y_pred = gnb.fit(x_train, y_train).predict(x_test)
 
 matriz = metrics.confusion_matrix(y_test,y_pred)
 
-
+#print(y_test)
 #print(base.iloc[:, 2])
 print(matriz)
+
+TP = 0
+FP = 0
+FN = 0
+VN = 0
+cont = 0
+for i in y_test:
+    if (i==0):
+        if(y_pred[cont]==i):
+            TP=TP+1
+        else:
+            FN=FN+1
+    if (i==1):
+        if(y_pred[cont]==i):
+            VN=VN+1
+        else:
+            FP=FP+1
+    cont=cont+1
+
+print(TP,'/',FN)
+print(FP,'/',VN)
+
+
+acuracia = ((TP+VN)/(TP+FP+FN+VN))
+print('Acurácia:',acuracia)
+precisao = ((TP)/(TP+FP))
+print('Precisão:',precisao)
+recall = ((TP)/(TP+FN))
+print('Recal:',recall)
+f1score = ((2 * precisao * recall) / (precisao + recall))
+print('F1 Score:',f1score)
+
+
+
